@@ -28,20 +28,31 @@ function InputField() {
   const url =
     "https://hivsmippb9.execute-api.us-east-1.amazonaws.com/default/miladyFetchLyric";
 
+  const [loading, setLoading] = React.useState(false);
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     addMessage(new MessageText(data.query, "mes", "you"));
     setValue("query", "");
-    const response = await fetch(url, {
+    setLoading(true);
+
+    await fetch(url, {
       method: "POST",
       body: JSON.stringify(data.query),
-    });
-    const result = await response.json();
-    // console.log(result);
-    addMessage(new MessageText(result));
+    })
+      .then((response) => {
+        if (response.ok) {
+          setLoading(false);
+          response.json().then((result) => {
+            addMessage(new MessageText(result));
+          });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const onError = () => {
-    addMessage(new MessageText("hey! say something first!", "err"));
+    addMessage(new MessageText("Say something first!", "err"));
   };
 
   return (
@@ -113,21 +124,24 @@ function InputField() {
                 borderTopColor: "#000000af",
               }}
               onPress={handleSubmit(onSubmit, onError)}
+              disabled={loading}
             >
-              <Text
-                style={{
-                  color: value === "" ? "#ffffff66" : "#fff",
-                }}
-                disabled={value === ""}
-                selectable={false}
-              >
-                Send
-                {/* <ActivityIndicator
+              {!loading ? (
+                <Text
+                  style={{
+                    color: value === "" ? "#ffffff66" : "tomato",
+                  }}
+                  selectable={false}
+                >
+                  Send
+                </Text>
+              ) : (
+                <ActivityIndicator
                   size="small"
                   color="#ffffff"
                   style={{ paddingTop: 5 }}
-                /> */}
-              </Text>
+                />
+              )}
             </Pressable>
           </View>
         )}

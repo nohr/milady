@@ -15,6 +15,7 @@ export default function Message({
   return (
     <View
       style={{
+        maxWidth: "100%",
         flex: 1,
         backgroundColor: type === "err" ? "#ff000037" : "#ffffff00",
         marginTop: 5,

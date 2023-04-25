@@ -22,18 +22,20 @@ type ChatStore = {
 };
 
 export const useChatStore = create<ChatStore>((set) => ({
-  messages: [
-    new MessageText("hey, what are you listening to?"),
-    new MessageText("say something first!", "err"),
-    new MessageText("say something first!", "err"),
-    new MessageText("what are you up to?", "mes", "you"),
-  ],
+  messages: [],
   addMessage: (message: MessageText) => {
-    if (message.type === "mes")
+    if (message.type === "mes") {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    else Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-
-    set((state) => ({ messages: [...state.messages, message] }));
+      set((state) => ({ messages: [...state.messages, message] }));
+    } else if (message.type === "err") {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      set((state) => ({ messages: [...state.messages, message] }));
+      setTimeout(() => {
+        set((state) => ({
+          messages: state.messages.filter((m) => m !== message),
+        }));
+      }, 3000);
+    }
   },
   clearMessages: () => {
     set({ messages: [] });

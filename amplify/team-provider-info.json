@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-amplifya2df129c66234-staging-33219-authRole",
+      "UnauthRoleArn": "arn:aws:iam::882985549483:role/amplify-amplifya2df129c66234-staging-33219-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::882985549483:role/amplify-amplifya2df129c66234-staging-33219-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-amplifya2df129c66234-staging-33219-deployment",
+      "UnauthRoleName": "amplify-amplifya2df129c66234-staging-33219-unauthRole",
+      "StackName": "amplify-amplifya2df129c66234-staging-33219",
+      "StackId": "arn:aws:cloudformation:us-east-1:882985549483:stack/amplify-amplifya2df129c66234-staging-33219/c8be84d0-e319-11ed-a266-1283b6787eef",
+      "AmplifyAppId": "d3vsy5itmzgi7i"
+    },
+    "categories": {
+      "auth": {
+        "milady": {}
+      }
+    }
+  }
+}
