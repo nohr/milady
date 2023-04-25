@@ -3,35 +3,49 @@ import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
-  Text,
   TouchableWithoutFeedback,
-  View,
 } from "react-native";
-import InputField from "./components/InputField";
-import ChatField from "./components/ChatField";
-import Logo from "./components/Logo";
 import { StatusBar } from "expo-status-bar";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Settings from "./screens/Settings";
+import Chat from "./components/Chat";
+import IonIcons from "@expo/vector-icons/Ionicons";
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{
-          flex: 1,
-          display: "flex",
-          backgroundColor: "#2e2529",
-          padding: 10,
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Logo />
+    <NavigationContainer>
+      <SafeAreaView style={{ backgroundColor: "#2e2529", height: "100%" }}>
         <StatusBar style="light" />
-        <ChatField />
-        <InputField />
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+        <Tab.Navigator
+          initialRouteName="Chat"
+          sceneContainerStyle={{
+            backgroundColor: "#2e2529",
+          }}
+          screenOptions={{
+            headerTitle: "milady ♪",
+            headerStyle: {
+              backgroundColor: "#f4511e00",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+            tabBarStyle: {
+              backgroundColor: "#2e2529",
+              borderTopWidth: 0,
+            },
+            headerBackgroundContainerStyle: {
+              backgroundColor: "#2e2529",
+            },
+          }}
+        >
+          <Tab.Screen name="Chat" component={Chat} options={{}} />
+          <Tab.Screen name="Settings" component={Settings} />
+        </Tab.Navigator>
+      </SafeAreaView>
+    </NavigationContainer>
   );
 }

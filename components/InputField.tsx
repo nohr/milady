@@ -7,13 +7,14 @@ import {
   TextInput,
   View,
 } from "react-native";
-import * as Haptics from "expo-haptics";
+import { MessageText, useChatStore } from "../state/chatStore";
 
 type Inputs = {
   query: string;
 };
 
 function InputField() {
+  const addMessage = useChatStore((state) => state.addMessage);
   const {
     setValue,
     control,
@@ -28,18 +29,19 @@ function InputField() {
     "https://hivsmippb9.execute-api.us-east-1.amazonaws.com/default/miladyFetchLyric";
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    addMessage(new MessageText(data.query, "mes", "you"));
     setValue("query", "");
     const response = await fetch(url, {
       method: "POST",
       body: JSON.stringify(data.query),
     });
     const result = await response.json();
-    console.log(result);
+    // console.log(result);
+    addMessage(new MessageText(result));
   };
 
   const onError = () => {
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+    addMessage(new MessageText("hey! say something first!", "err"));
   };
 
   return (
@@ -81,8 +83,8 @@ function InputField() {
                 color: "#ffffff",
                 backgroundColor: "#00000066",
                 borderStyle: "solid",
-                borderWidth: 1,
-                borderColor: "#000000af",
+                borderTopWidth: 1,
+                borderTopColor: "#000000af",
                 fontStyle: value === "" ? "italic" : "normal",
               }}
               cursorColor="#ffffff"
@@ -91,9 +93,11 @@ function InputField() {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              // autoFocus
+              selectTextOnFocus
               autoCorrect={false}
               autoCapitalize="none"
+              keyboardAppearance="dark"
+              clearButtonMode="while-editing"
             />
             <Pressable
               style={{
@@ -105,8 +109,8 @@ function InputField() {
                 justifyContent: "center",
                 backgroundColor: "#00000066",
                 borderStyle: "solid",
-                borderWidth: 1,
-                borderColor: "#000000af",
+                borderTopWidth: 1,
+                borderTopColor: "#000000af",
               }}
               onPress={handleSubmit(onSubmit, onError)}
             >
@@ -128,22 +132,6 @@ function InputField() {
           </View>
         )}
       />
-      {errors.query && (
-        <Text
-          style={{
-            fontStyle: "italic",
-            color: "#fff",
-            backgroundColor: "#ff000066",
-            padding: 5,
-            borderRadius: 5,
-            borderStyle: "solid",
-            borderWidth: 1,
-            borderColor: "#ff0000af",
-          }}
-        >
-          You have to send something!
-        </Text>
-      )}
     </View>
   );
 }

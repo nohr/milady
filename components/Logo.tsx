@@ -7,9 +7,11 @@ export default function Logo() {
         color: "#fff",
         fontSize: 24,
         fontWeight: "bold",
-        position: "absolute",
-        top: 100,
-        zIndex: 1,
+        display: "flex",
+        justifyContent: "center",
+        // position: "absolute",
+        // top: 100,
+        // zIndex: 1,
       }}
     >
       milady ♪
